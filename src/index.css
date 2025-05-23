@@ -44,4 +44,8 @@ body {
 }
 .meteo {
   font-size: xx-large;
+  background: #8080803b;
+  width: fit-content;
+  padding: 20px;
+  border-radius: 20px;
 }
