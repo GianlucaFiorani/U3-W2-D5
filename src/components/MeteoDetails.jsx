@@ -74,13 +74,12 @@ const MeteoDetails = () => {
       }}
     >
       <Container>
-        <div>
-          <div className="text-center pt-5"></div>
-          <div className="text-center">
-            <h3>{params.name}</h3>
+        <div className="meteo">
+          <div className="text-center pt-5 m-0">
+            <h2>{params.name}</h2>
           </div>
           <div className="text-center">
-            <img src={`https://openweathermap.org/img/wn/${meteoWeather.icon}@2x.png`} alt="" />
+            <img src={`https://openweathermap.org/img/wn/${meteoWeather.icon}@2x.png`} alt="" width="200px" />
           </div>
           <div className="text-center">
             <p>{meteoWeather.description}</p>

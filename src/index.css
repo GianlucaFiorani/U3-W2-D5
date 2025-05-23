@@ -42,3 +42,6 @@ body {
 .row {
   overflow-x: auto;
 }
+.meteo {
+  font-size: xx-large;
+}
