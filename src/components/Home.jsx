@@ -28,7 +28,7 @@ const Home = (props) => {
         const cityData = await response.json();
         setCity(cityData);
       } else {
-        throw new Error("Errore nel caricamento film");
+        throw new Error("Errore nel caricamento");
       }
     } catch (error) {
       console.log(error);

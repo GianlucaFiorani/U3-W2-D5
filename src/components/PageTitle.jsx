@@ -1,12 +1,6 @@
-import { useState } from "react";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
-import { BorderWidth, GridFill } from "react-bootstrap-icons";
 import { Form } from "react-bootstrap";
 
 function PageTitle(props) {
-  const [radioValue, setRadioValue] = useState("1");
-
   return (
     <div className="title mt-4">
       <div className="d-flex justify-content-between">
@@ -19,7 +13,7 @@ function PageTitle(props) {
           >
             <Form.Control
               type="text"
-              placeholder={`Search ${props.show ? "Tv-Show" : "Movie"}`}
+              placeholder={`Search city`}
               className="me-2"
               onChange={(e) => {
                 props.search(e.target.value);

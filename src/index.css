@@ -49,3 +49,21 @@ body {
   padding: 20px;
   border-radius: 20px;
 }
+.meteo-icon {
+  transform: translateY(-39px);
+}
+
+.meteo-desc {
+  font-style: oblique;
+  transform: translateY(-62px);
+}
+.temp {
+  transform: translateY(-28px);
+  scale: 1.5;
+}
+
+.loader {
+  top: 50%;
+  left: 50%;
+  scale: 2.5;
+}
