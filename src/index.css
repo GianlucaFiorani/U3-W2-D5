@@ -67,3 +67,6 @@ body {
   left: 50%;
   scale: 2.5;
 }
+.bi-house:hover {
+  transform: scale(1.2);
+}

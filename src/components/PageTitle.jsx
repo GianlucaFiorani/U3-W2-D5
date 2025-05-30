@@ -16,7 +16,7 @@ function PageTitle(props) {
               placeholder={`Search city`}
               className="me-2"
               onChange={(e) => {
-                props.search(e.target.value);
+                e.target.value ? props.search(e.target.value) : props.search(".");
               }}
             />
           </Form>

@@ -13,6 +13,7 @@ const MeteoDetails = () => {
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [date, setDate] = useState([]);
+  const mounth = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
   const fetchMeteoNow = async () => {
     console.log("fetching...");
@@ -61,7 +62,7 @@ const MeteoDetails = () => {
     }
   };
   const weekDay = (d) => {
-    switch (new Date(d.dt * 1000).getDay()) {
+    switch (d.getDay()) {
       case 0:
         return "Dom";
 
@@ -88,7 +89,7 @@ const MeteoDetails = () => {
   useEffect(() => {
     fetchMeteoNow();
     fetchMeteoWeek();
-    console.log(meteoWeekDay);
+    // console.log(meteoWeekDay);
   }, []);
   return (
     <div
@@ -97,12 +98,16 @@ const MeteoDetails = () => {
         overflowY: "auto",
         height: "100%",
         backgroundImage: `url("  ${
-          meteoWeather.main === "Rain" || meteoWeather.main === "Drizzle"
+          meteoWeather.main === "Rain" || meteoWeather.main === "Drizzle" || meteoWeather.main === "Thunderstorm"
             ? "https://i.gifer.com/Xm74.gif"
-            : meteoWeather.main === "Clouds"
+            : meteoWeather.main === "Clouds" || parseInt(meteoWeather.icon) === 50
             ? "https://i.gifer.com/9vZI.gif"
             : meteoWeather.main === "Clear"
-            ? "https://i.gifer.com/Lx0q.gif"
+            ? meteoWeather.icon.slice(-1) === "d"
+              ? "https://i.gifer.com/Lx0q.gif"
+              : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXJzZzR4NDd6c3M4dGJrM2Y0eDB5a2Jkcjc1dmlhbGNocXpuY3lzaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pWhWtKdqwOAco/giphy.gif"
+            : meteoWeather.main === "Snow"
+            ? "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2toMzQ2OTc4aGJtY3lic3c1bnI3Ym95aGZuaWNoaHN2eWV4ZjQ4YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FoVi0LDjy1XS8/giphy.gif"
             : ""
         } ")`,
         backgroundPosition: "center",
@@ -110,7 +115,7 @@ const MeteoDetails = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <Link to={"/"} className="position-absolute btn text-white top-0 p-2">
+      <Link to={"/"} className="position-absolute btn text-white top-0 p-2 fs-2">
         <House />
       </Link>
       {isLoading ? (
@@ -118,11 +123,19 @@ const MeteoDetails = () => {
       ) : (
         <Container>
           <div className="d-flex justify-content-center">
-            <div className="meteo pb-0">
+            <div
+              className="meteo pb-0"
+              style={{
+                background:
+                  meteoWeather.main === "Snow" || (meteoWeather.main === "Clear" && meteoWeather.icon.slice(-1))
+                    ? "rgba(6, 6, 6, 0.34)"
+                    : "rgba(229, 229, 229, 0.34)",
+              }}
+            >
               <div className="text-center mt-2 ">
                 <h2>{params.name}</h2>
               </div>
-              <div className="text-center "></div>
+              <div className="text-center ">{`${weekDay(date)} ${date.getDay()} ${mounth[date.getMonth()]}`}</div>
               <div className="text-center">
                 <img src={`https://openweathermap.org/img/wn/${meteoWeather.icon}@4x.png`} alt="" width="200px" className="meteo-icon" />
               </div>
@@ -137,11 +150,21 @@ const MeteoDetails = () => {
           <Row className="flex-nowrap mt-5">
             {meteoWeek.slice(0, 8).map((day) => (
               <Col key={day.dt}>
-                <div className="text-center">{Math.round(parseFloat(day.main.temp))}°</div>
-                <div className="text-center">
-                  <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`} alt="" />
+                <div
+                  className="rounded-3"
+                  style={{
+                    background:
+                      meteoWeather.main === "Snow" || (meteoWeather.main === "Clear" && meteoWeather.icon.slice(-1))
+                        ? "rgba(6, 6, 6, 0.34)"
+                        : "rgba(229, 229, 229, 0.34)",
+                  }}
+                >
+                  <div className="text-center">{Math.round(parseFloat(day.main.temp))}°</div>
+                  <div className="text-center">
+                    <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`} alt="" />
+                  </div>
+                  <div className="text-center">{new Date(day.dt * 1000).getHours()}:00</div>
                 </div>
-                <div className="text-center">{new Date(day.dt * 1000).getHours()}:00</div>
               </Col>
             ))}
           </Row>
@@ -152,10 +175,15 @@ const MeteoDetails = () => {
                 <ListGroupItem
                   key={`w-${day.dt}`}
                   className="d-flex align-items-center justify-content-between"
-                  style={{ background: "rgba(229, 229, 229, 0.34)" }}
+                  style={{
+                    background:
+                      meteoWeather.main === "Snow" || (meteoWeather.main === "Clear" && meteoWeather.icon.slice(-1))
+                        ? "rgba(6, 6, 6, 0.34)"
+                        : "rgba(229, 229, 229, 0.34)",
+                  }}
                 >
                   <div className="text-center" style={{ width: "37px" }}>
-                    {weekDay(day)}
+                    {weekDay(new Date(day.dt * 1000))}
                   </div>
                   <div className="text-center">
                     <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`} alt="" />

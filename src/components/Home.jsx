@@ -3,14 +3,17 @@ import { Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import PageTitle from "./PageTitle";
 import CityList from "./CityList";
+import History from "./History";
 
 const Home = (props) => {
   const [change, setChange] = useState(true);
   const [search, setSearch] = useState("");
   const [city, setCity] = useState([]);
+  const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const historyNow = localStorage.getItem("history");
 
   const carouselChange = () => {
     setChange(!change);
@@ -18,8 +21,17 @@ const Home = (props) => {
   const searchSubmit = (s) => {
     setSearch(s);
   };
+  const historyUpdate = (h, e) => {
+    // e.preventDefault();
+    // setHistory([...history, h]);
+    localStorage.setItem("history", JSON.stringify(history));
+    setTimeout(() => {
+      console.log(history);
+      console.log(JSON.parse(localStorage.getItem("history")));
+    }, 500);
+  };
 
-  const fetchCity = async (id) => {
+  const fetchCity = async () => {
     console.log("fetching...");
     setIsLoading(true);
     try {
@@ -39,14 +51,15 @@ const Home = (props) => {
     }
   };
   useEffect(() => {
-    fetchCity();
+    search && fetchCity();
   }, [search]);
   console.log(city);
   return (
     <>
       <Container className="px-2">
         <PageTitle show={props.show} search={searchSubmit} changeType={carouselChange} />
-        <CityList citys={city} />
+        <CityList citys={city} historyUpdate={historyUpdate} h={true} />
+        {/* {localStorage.length > 0 && <History />} */}
       </Container>
     </>
   );
